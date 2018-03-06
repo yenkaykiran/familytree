@@ -1,0 +1,36 @@
+<div class="modal-header">
+  <h4 class="modal-title">Link Member</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.close(member)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="form-group" *ngIf="member">
+    <label for="name">Source Member Name</label>
+    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" [(ngModel)]="member.name" [disabled]="true" />
+  </div>
+  <div class="form-inline">
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-outline-primary" id="link" ngbDropdownToggle>{{getRelation()}}</button>
+      <div ngbDropdownMenu aria-labelledby="link">
+        <button class="dropdown-item" (click)="relation='son'">Son</button>
+        <button class="dropdown-item" (click)="relation='daughter'">Daughter</button>
+        <button class="dropdown-item" (click)="relation='spouse'">Spouse</button>
+      </div>
+    </div>
+    <div class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="name1" [(ngModel)]="name" />
+      <button class="btn btn-outline-success my-2 my-sm-0" type="button" (click)="getAllByName(name)">Search</button>
+    </div>
+    <div ngbDropdown class="d-inline-block" *ngIf="members && members.length > 0 && selected">
+      <button class="btn btn-outline-warning" id="member" ngbDropdownToggle>{{selected.name}}</button>
+      <div ngbDropdownMenu aria-labelledby="member">
+        <button class="dropdown-item" *ngFor="let m of members" (click)="selected=m">{{m.name}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(member)">Close</button>
+  <button type="button" class="btn btn-outline-success" (click)="link()">Save</button>
+</div>

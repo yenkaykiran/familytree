@@ -1,0 +1,53 @@
+<form (ngSubmit)="save()">
+  <div class="modal-header">
+    <h4 class="modal-title">Edit Member</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.close(member)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group" *ngIf="member.id">
+      <label for="id">ID</label>
+      <input type="text" class="form-control" id="id" name="id" [(ngModel)]="member.id" [disabled]="true" />
+    </div>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" [(ngModel)]="member.name" />
+    </div>
+    <div class="form-group">
+      <label for="familyName">Family Name</label>
+      <input type="text" class="form-control" id="familyName" name="familyName" placeholder="Enter Family Name" [(ngModel)]="member.familyName" />
+    </div>
+    <div class="form-group">
+      <label for="alternateFamilyName">Alternate Family Name</label>
+      <input type="text" class="form-control" id="alternateFamilyName" name="alternateFamilyName" placeholder="Enter Alternate Family Name" [(ngModel)]="member.alternateFamilyName" />
+    </div>
+    <div class="form-group">
+      <label>Gender ({{member.gender}})</label>
+      <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="member.gender">
+        <label ngbButtonLabel class="btn-primary">
+          <input ngbButton type="radio" value="MALE"> Male
+        </label>
+        <label ngbButtonLabel class="btn-primary">
+          <input ngbButton type="radio" value="FEMALE"> Female
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="dateOfBirth">Date Of Birth</label>
+      <input type="datetime-local" class="form-control" id="dateOfBirth" name="dateOfBirth" placeholder="Enter Date of Birth" [(ngModel)]="member.dateOfBirth" />
+    </div>
+    <div class="form-group">
+      <label for="place">Place</label>
+      <input type="text" class="form-control" id="place" name="place" placeholder="Enter Place" [(ngModel)]="member.place" />
+    </div>
+    <div class="form-group">
+      <label for="contact">Contact</label>
+      <input type="text" class="form-control" id="contact" name="contact" placeholder="Enter Contact" [(ngModel)]="member.contact" />
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close(member)">Close</button>
+    <button type="submit" class="btn btn-outline-success">Save</button>
+  </div>
+</form>
