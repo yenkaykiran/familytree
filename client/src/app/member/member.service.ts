@@ -43,6 +43,14 @@ export class MemberService {
          });
   }
 
+  linkMembers(source: number, destination: number, relation: string): Observable<Response> {
+    return this.http.post("api/link?source=" + source + "&destination=" + destination + "&relation=" + relation, {})
+         .map((res: Response) => {
+           return res;
+         })
+         .catch((error: any) => Observable.throw(error.json().error || 'Server Error'));
+  }
+
   private convertData(embedded: any): MemberHolder {
     let membersHolder = new MemberHolder();
     membersHolder.members = embedded["_embedded"]["data"];

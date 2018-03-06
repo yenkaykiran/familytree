@@ -4,6 +4,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Member, MemberHolder } from '../model/member';
 import { MemberService } from '../member/member.service';
 
+import { Http, Response } from '@angular/http';
+
 @Component({
   selector: 'app-member-link',
   templateUrl: './member-link.component.html',
@@ -49,31 +51,8 @@ export class MemberLinkComponent implements OnInit {
   }
 
   link() {
-    let relationList = this.member[this.relation];
-    if(!relationList) {
-      relationList = new Array<Member>();
-    }
-    relationList.push(this.selected);
-    console.log(this.member);
-    this.service.save(this.member).subscribe((res: Member) => {
-      switch(this.relation) {
-        case 'son':
-          this.selected.father = res;
-          break;
-        case 'daughter':
-          this.selected.father = res;
-          break;
-        case 'spouse':
-          let relationList1 = this.selected['spouse'];
-          if(!relationList1) {
-            relationList1 = new Array<Member>();
-          }
-          relationList1.push(res);
-          break;
-      }
-      this.service.save(this.selected).subscribe((res1: Member) => {
-        this.activeModal.close(res);
-      });
+    this.service.linkMembers(this.selected.id, this.member.id, this.relation).subscribe((res: Response) => {
+      this.activeModal.close();
     });
   }
 }

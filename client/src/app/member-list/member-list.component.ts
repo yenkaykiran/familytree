@@ -73,7 +73,7 @@ export class MemberListComponent implements OnInit {
       const modalRef = this.modalService.open(MemberLinkComponent, { size: 'lg', backdrop: 'static'});
       modalRef.componentInstance.member = this.parent;
       modalRef.result.then((result) => {
-
+        
       }, (result) => {
 
       });
@@ -89,6 +89,6 @@ export class MemberListComponent implements OnInit {
   }
 
   preparePages() {
-    this.numbers = Array(this.membersHolder.totalPages).fill().map((x,i)=>i);
+    this.numbers = Array.from(Array(this.membersHolder.totalPages)).map((x,i)=>i);
   }
 }
