@@ -13,6 +13,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MemberListComponent } from './member-list/member-list.component';
 import { MemberEditComponent } from './member-edit/member-edit.component';
 import { MemberLinkComponent } from './member-link/member-link.component';
+import { MemberUnlinkComponent } from './member-unlink/member-unlink.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { MemberLinkComponent } from './member-link/member-link.component';
     MemberComponent,
     MemberListComponent,
     MemberEditComponent,
-    MemberLinkComponent
+    MemberLinkComponent,
+    MemberUnlinkComponent
   ],
   imports: [
     FormsModule,

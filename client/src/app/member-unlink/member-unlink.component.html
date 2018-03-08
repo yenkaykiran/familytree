@@ -1,0 +1,9 @@
+<div ngbDropdown class="d-inline-block">
+  <button class="btn btn-outline-danger" id="member" ngbDropdownToggle>
+    <span class="fa fa-link"></span>
+    <span>Unlink</span>
+  </button>
+  <div ngbDropdownMenu aria-labelledby="member">
+    <button class="dropdown-item" *ngFor="let m of member[relation]" (click)="unlink(m)">{{m.name}}</button>
+  </div>
+</div>

@@ -12,32 +12,19 @@
           </li>
         </ul>
       </nav>
-      <app-member *ngFor="let member of members; trackBy index;" [member]="member" (fetchRelated)="fetchRelated($event, member)"></app-member>
+      <app-member *ngFor="let member of members; trackBy index;" [member]="member" (fetchRelated)="parent = null; fetchRelated($event, member)"></app-member>
     </div>
   </div>
   <div class="col-sm-6">
     <div *ngIf="parent">
       <div class="alert alert-info">
-        <div class="d-inline-block">
-          <button class="btn btn-outline-primary" (click)="add()">
-              <span class="fa fa-plus"></span>
-              <span>Add</span>
-          </button>
-          <button class="btn btn-outline-warning" (click)="link()">
-              <span class="fa fa-link"></span>
-              <span>Link</span>
-          </button>
-        </div>
+        <app-member-link [member]="parent" [relation]="event.relation" (linked)="fetchRelatedAgain(parent)"></app-member-link>
+        <app-member-unlink [member]="parent" [relation]="event.relation" (unlinked)="fetchRelatedAgain(parent)"></app-member-unlink>
         {{parent.name}} {{title}}
       </div>
-      <!-- <nav>
-        <ul class="pagination">
-          <li class="page-item" *ngFor="let number of numbers">
-            <a class="page-link" (click)="loadPage(number)">{{number+1}}</a>
-          </li>
-        </ul>
-      </nav> -->
-      <app-member *ngFor="let member of parent.son; trackBy index;" [member]="member" (fetchRelated)="fetchRelated($event, member)"></app-member>
+      <div *ngIf="event && event.relation && parent[event.relation]">
+        <app-member *ngFor="let member of parent[event.relation]; trackBy index;" [member]="member" (fetchRelated)="parent = null; fetchRelated($event, member)"></app-member>
+      </div>
     </div>
   </div>
 </div>

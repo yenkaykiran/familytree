@@ -23,6 +23,7 @@ export class MemberListComponent implements OnInit {
   numbers;
   parent: Member;
   title: string;
+  event: any;
 
   ngOnInit() {
     this.getAll();
@@ -68,23 +69,17 @@ export class MemberListComponent implements OnInit {
     });
   }
 
-  link() {
-    if(this.parent) {
-      const modalRef = this.modalService.open(MemberLinkComponent, { size: 'lg', backdrop: 'static'});
-      modalRef.componentInstance.member = this.parent;
-      modalRef.result.then((result) => {
-        
-      }, (result) => {
-
-      });
-    }
+  fetchRelatedAgain(member: Member) {
+    this.fetchRelated(this.event, member);
   }
 
   fetchRelated($event, member: Member) {
     this.parent = member;
     this.title = $event.title;
+    this.event = $event;
+    member[$event.relation] = null;
     this.service.fetchRelated($event.relation, member).subscribe((res: MemberHolder) => {
-      member.son = res.members;
+      member[$event.relation] = res.members;
     });
   }
 
