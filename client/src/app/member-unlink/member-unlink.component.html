@@ -4,6 +4,6 @@
     <span>Unlink</span>
   </button>
   <div ngbDropdownMenu aria-labelledby="member">
-    <button class="dropdown-item" *ngFor="let m of member[relation]" (click)="unlink(m)">{{m.name}}</button>
+    <button class="dropdown-item" *ngFor="let m of member[relation]" (click)="unlink(m)">{{m.name}} {{m.initials}}</button>
   </div>
 </div>
