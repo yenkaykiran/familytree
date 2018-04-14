@@ -1,6 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ContentChild } from '@angular/core';
 
 import { MemberListComponent } from './member-list/member-list.component';
+
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +13,7 @@ import { MemberListComponent } from './member-list/member-list.component';
 export class AppComponent implements OnInit {
   title = 'Yenkay Family Tree App';
 
-  @ViewChild("membersList") membersList: MemberListComponent;
-
-  constructor() { }
+  constructor(private route: Router, private location: Location) { }
 
   isIn = false;
   name: string;
@@ -24,5 +25,22 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  getAllByName(name) {
+    var current = this.location.path();
+    if(current) {
+      if(!current.startsWith('/list') && !current.startsWith('/cyto-render')) {
+        current = "/list";
+      } else if (current.startsWith('/list')){
+        current = '/list'
+      } else if (current.startsWith('/cyto-render')){
+        current = '/cyto-render'
+      }
+    }
+    if(!name) {
+      name = '';
+    }
+    this.route.navigate([current + '/' + name]);
   }
 }

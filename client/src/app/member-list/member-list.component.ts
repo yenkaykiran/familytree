@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Response } from '@angular/http';
 import { MemberService } from '../member/member.service';
 import { Member, MemberHolder } from '../model/member';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { MemberEditComponent } from '../member-edit/member-edit.component';
@@ -14,7 +15,7 @@ import { MemberLinkComponent } from '../member-link/member-link.component';
 })
 export class MemberListComponent implements OnInit {
 
-  constructor(private service: MemberService, private modalService: NgbModal) { }
+  constructor(private service: MemberService, private modalService: NgbModal, private route: ActivatedRoute) { }
 
   members: Member[];
   membersHolder: MemberHolder;
@@ -26,7 +27,14 @@ export class MemberListComponent implements OnInit {
   event: any;
 
   ngOnInit() {
-    this.getAll();
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      let name = params.get('name');
+      if(name) {
+        this.getAllByName(name);
+      } else {
+        this.getAll();
+      }
+    });
   }
 
   getAll() {

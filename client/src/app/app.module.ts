@@ -14,6 +14,14 @@ import { MemberListComponent } from './member-list/member-list.component';
 import { MemberEditComponent } from './member-edit/member-edit.component';
 import { MemberLinkComponent } from './member-link/member-link.component';
 import { MemberUnlinkComponent } from './member-unlink/member-unlink.component';
+import { MemberListCytoComponent } from './member-list-cyto/member-list-cyto.component';
+import { CytoscapeComponent } from './cytoscape/cytoscape.component';
+
+const appRoutes: Routes = [
+  { path: 'list/:name', component: MemberListComponent },
+  { path: 'cyto-render/:name', component: MemberListCytoComponent },
+  { path: '**', component: MemberListComponent }
+];
 
 @NgModule({
   declarations: [
@@ -22,7 +30,9 @@ import { MemberUnlinkComponent } from './member-unlink/member-unlink.component';
     MemberListComponent,
     MemberEditComponent,
     MemberLinkComponent,
-    MemberUnlinkComponent
+    MemberUnlinkComponent,
+    MemberListCytoComponent,
+    CytoscapeComponent
   ],
   imports: [
     FormsModule,
@@ -30,7 +40,7 @@ import { MemberUnlinkComponent } from './member-unlink/member-unlink.component';
     HttpModule,
     NgbModule.forRoot(),
     RouterModule.forRoot(
-      [],
+      appRoutes,
       { enableTracing: true } // <-- debugging purposes only
     )
   ],
