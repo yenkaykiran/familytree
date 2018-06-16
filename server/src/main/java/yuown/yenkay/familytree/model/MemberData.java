@@ -8,17 +8,11 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 
-@NodeEntity
 @Data
-@JsonIgnoreProperties(value = { "son", "daughter", "spouse", "father", "mother" })
-public class Member {
+public class MemberData {
 
 	@Id
 	@GeneratedValue
@@ -40,20 +34,15 @@ public class Member {
 
 	private String contact;
 
-	@Relationship(type = "SON", direction = Relationship.OUTGOING)
-	Set<Member> son = new HashSet<Member>();
+	Set<Long> son = new HashSet<Long>();
 
-	@Relationship(type = "DAUGHTER", direction = Relationship.OUTGOING)
-	Set<Member> daughter = new HashSet<Member>();
+	Set<Long> daughter = new HashSet<Long>();
 
-	@Relationship(type = "SPOUSE", direction = Relationship.UNDIRECTED)
-	Set<Member> spouse = new HashSet<Member>();
+	Set<Long> spouse = new HashSet<Long>();
 
-	@Relationship(type = "FATHER", direction = Relationship.OUTGOING)
-	Member father;
+	Long father;
 
-	@Relationship(type = "MOTHER", direction = Relationship.OUTGOING)
-	Member mother;
+	Long mother;
 
 	@Override
 	public int hashCode() {

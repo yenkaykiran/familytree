@@ -1,0 +1,7 @@
+[
+	{
+		"user": "kirannk",
+		"password": "nk12345678",
+		"roles": ["ROLE_USER", "ROLE_ADMIN"]
+	}
+]
