@@ -1,6 +1,6 @@
 package yuown.yenkay.familytree.auth;
 
-import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,8 +8,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
@@ -17,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileCopyUtils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,9 +27,6 @@ import yuown.yenkay.familytree.model.LocalUser;
 @Component
 public class PropertiesAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 	
-	@Autowired
-	private ResourceLoader resourceLoader;
-	
     @Autowired
     private JwtUtil jwtUtil;
     
@@ -37,11 +34,12 @@ public class PropertiesAuthenticationProvider extends AbstractUserDetailsAuthent
 	
 	@PostConstruct
 	private void init() throws Exception {
-	    Resource resource = resourceLoader.getResource("classpath:local-users.json");
-	    if (resource != null) {
-	    	File localUserFile = resource.getFile();
+		ClassPathResource classPathResource = new ClassPathResource("local-users.json");
+	    if (classPathResource != null) {
+	    	byte[] bdata = FileCopyUtils.copyToByteArray(classPathResource.getInputStream());
+	        String data = new String(bdata, StandardCharsets.UTF_8);
 	    	ObjectMapper objMapper = new ObjectMapper();
-	    	List<LocalUser> localUsers = objMapper.readValue(localUserFile, new TypeReference<List<LocalUser>>(){});
+	    	List<LocalUser> localUsers = objMapper.readValue(data, new TypeReference<List<LocalUser>>(){});
 	    	localUsers.forEach(localUser -> users.add(new DummyUser(localUser.getUser(), localUser.getPassword(), localUser.getRoles())));
 	    }
 	}
