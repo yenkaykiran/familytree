@@ -53,10 +53,14 @@ public class PropertiesAuthenticationProvider extends AbstractUserDetailsAuthent
 
 	@Override
 	protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-		DummyUser dummyUser = users.stream()
-								   .filter(f -> f.getUsername().equals(username) && f.getPassword().equals(authentication.getCredentials()))
-								   .collect(Collectors.toList())
-								   .get(0);
+		DummyUser dummyUser = null;
+		try {
+			dummyUser = users.stream()
+							 .filter(f -> f.getUsername().equals(username) && f.getPassword().equals(authentication.getCredentials()))
+							 .collect(Collectors.toList())
+							 .get(0);
+		} catch (Exception e) {
+		}
 		if(dummyUser == null) {
 			throw new BadCredentialsException("Username/ Password mismatch!");
 		}

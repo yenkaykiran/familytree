@@ -9,6 +9,9 @@
         <a class="nav-link" routerLink="/list" routerLinkActive="active">Home</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" routerLink="/export" routerLinkActive="active">Export</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" routerLink="/cyto-render" routerLinkActive="active">Cytoscape Rendering</a>
       </li>
     </ul>
@@ -19,6 +22,9 @@
   </div>
 </nav>
 <br />
-<div class="container">
-  <router-outlet></router-outlet>
-</div>
+<main role="main">
+	<div class="container">
+		<simple-notifications [options]="options"></simple-notifications>
+		<router-outlet></router-outlet>
+	</div>
+</main>
