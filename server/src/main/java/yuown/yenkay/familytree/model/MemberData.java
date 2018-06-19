@@ -33,6 +33,8 @@ public class MemberData {
 	private String place;
 
 	private String contact;
+	
+	private String gothram;
 
 	Set<Long> son = new HashSet<Long>();
 

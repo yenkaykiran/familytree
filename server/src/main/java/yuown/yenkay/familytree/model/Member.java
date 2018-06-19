@@ -39,6 +39,8 @@ public class Member {
 	private String place;
 
 	private String contact;
+	
+	private String gothram;
 
 	@Relationship(type = "SON", direction = Relationship.OUTGOING)
 	Set<Member> son = new HashSet<Member>();
