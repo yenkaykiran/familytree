@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import yuown.yenkay.familytree.model.Gothram;
 import yuown.yenkay.familytree.model.Member;
 import yuown.yenkay.familytree.model.MemberData;
+import yuown.yenkay.familytree.repos.GothramRepository;
 import yuown.yenkay.familytree.repos.MemberRepository;
 
 @RestController
@@ -25,6 +28,9 @@ public class MemberLinkResource {
 
 	@Autowired
 	private MemberRepository memberRepository;
+	
+	@Autowired
+	private GothramRepository gothramRepository;
 
 	@PostMapping("/link")
 	public void link(@RequestParam("source") Long source, @RequestParam("relation") String relation,
@@ -70,6 +76,9 @@ public class MemberLinkResource {
 			prepareMemberRelations(member.getSon(), mData.getSon());
 			prepareMemberRelations(member.getDaughter(), mData.getDaughter());
 			prepareMemberRelations(member.getSpouse(), mData.getSpouse());
+			if(null != member.getGothram()) {
+				mData.setGothram(member.getGothram().getName());
+			}
 			if (null != member.getFather()) {
 				mData.setFather(member.getFather().getId());
 			}
@@ -86,8 +95,15 @@ public class MemberLinkResource {
 	public void importData(@RequestBody List<MemberData> imported) {
 		Map<Long, Long> map = new HashMap<>();
 		for (MemberData mData : imported) {
-			Member member = new Member();
-			BeanUtils.copyProperties(mData, member, new String[] { "son", "daughter", "spouse", "father", "mother", "id" });
+			Member member = memberRepository.findOneByNameAndFamilyNameAndAlternateFamilyName(mData.getName(), mData.getFamilyName(), mData.getAlternateFamilyName());
+			if (null == member) {
+				member = new Member();
+			}
+			BeanUtils.copyProperties(mData, member, new String[] { "son", "daughter", "spouse", "father", "mother", "id", "gothram" });
+			if (StringUtils.isNotBlank(mData.getGothram())) {
+				Gothram gothram = gothramRepository.findOneByNameIgnoreCaseContaining(mData.getGothram());
+				member.setGothram(gothram);
+			}
 			Member saved = memberRepository.save(member);
 			map.put(mData.getId(), saved.getId());
 		}

@@ -17,7 +17,7 @@ import lombok.Data;
 
 @NodeEntity
 @Data
-@JsonIgnoreProperties(value = { "son", "daughter", "spouse", "father", "mother" })
+@JsonIgnoreProperties(value = { "son", "daughter", "spouse", "father", "mother", "gothram" })
 public class Member {
 
 	@Id
@@ -40,7 +40,8 @@ public class Member {
 
 	private String contact;
 	
-	private String gothram;
+	@Relationship(type = "GOTHRAM", direction = Relationship.OUTGOING)
+	private Gothram gothram;
 
 	@Relationship(type = "SON", direction = Relationship.OUTGOING)
 	Set<Member> son = new HashSet<Member>();

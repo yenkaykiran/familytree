@@ -14,5 +14,7 @@ public interface MemberRepository extends Neo4jRepository<Member, Long> {
 
 	@RestResource(path = "nameStartsWith", rel = "nameStartsWith")
 	Page<Member> findAllByNameIgnoreCaseContaining(@Param("name") String name, Pageable p);
+	
+	Member findOneByNameAndFamilyNameAndAlternateFamilyName(String name, String familyName, String alternateFamilyName);
 
 }
