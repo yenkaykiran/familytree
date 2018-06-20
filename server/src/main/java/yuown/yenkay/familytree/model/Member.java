@@ -40,7 +40,9 @@ public class Member {
 
 	private String contact;
 	
-	@Relationship(type = "GOTHRAM", direction = Relationship.OUTGOING)
+	private Long gothramId;
+	
+	@Relationship(type = "HAS_GOTHRAM", direction = Relationship.OUTGOING)
 	private Gothram gothram;
 
 	@Relationship(type = "SON", direction = Relationship.OUTGOING)

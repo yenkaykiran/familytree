@@ -8,7 +8,7 @@ import org.neo4j.ogm.annotation.NodeEntity;
 
 import lombok.Data;
 
-@NodeEntity
+@NodeEntity(label = "Gothram")
 @Data
 public class Gothram {
 

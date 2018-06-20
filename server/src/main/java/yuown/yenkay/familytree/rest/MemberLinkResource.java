@@ -63,6 +63,24 @@ public class MemberLinkResource {
 		unlinkHelper(source, relation, destination);
 		unlinkHelper(source, relation, destination);
 	}
+	
+	@PostMapping("/attach-gothram")
+	public Member attachGothram(@RequestParam("member") Long member, @RequestParam("gothram") Long gothram) {
+		Member m = memberRepository.findById(member).get();
+		Gothram g = gothramRepository.findById(gothram).get();
+
+		if (null != m) {
+			if(null != g) {
+				m.setGothram(g);
+				m.setGothramId(g.getId());
+			} else {
+				m.setGothram(null);
+				m.setGothramId(null);
+			}
+			m = memberRepository.save(m);
+		}
+		return m;
+	}
 
 	@GetMapping("/export")
 	public List<MemberData> export() {
@@ -103,6 +121,7 @@ public class MemberLinkResource {
 			if (StringUtils.isNotBlank(mData.getGothram())) {
 				Gothram gothram = gothramRepository.findOneByNameIgnoreCaseContaining(mData.getGothram());
 				member.setGothram(gothram);
+				member.setGothramId(gothram.getId());
 			}
 			Member saved = memberRepository.save(member);
 			map.put(mData.getId(), saved.getId());
