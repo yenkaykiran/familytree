@@ -1,7 +1,13 @@
-[
+[ 
 	{
 		"user": "yenkay",
 		"password": "nk12345678",
 		"roles": ["ROLE_USER", "ROLE_ADMIN"]
+	},
+	
+	{
+		"user": "charan",
+		"password": "charan123",
+		"roles": ["ROLE_ADMIN"]
 	}
 ]
