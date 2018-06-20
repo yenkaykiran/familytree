@@ -120,6 +120,11 @@ public class MemberLinkResource {
 			BeanUtils.copyProperties(mData, member, new String[] { "son", "daughter", "spouse", "father", "mother", "id", "gothram" });
 			if (StringUtils.isNotBlank(mData.getGothram())) {
 				Gothram gothram = gothramRepository.findOneByNameIgnoreCaseContaining(mData.getGothram());
+				if(gothram == null) {
+					gothram = new Gothram();
+					gothram.setName(mData.getGothram());
+					gothram = gothramRepository.save(gothram);
+				}
 				member.setGothram(gothram);
 				member.setGothramId(gothram.getId());
 			}
