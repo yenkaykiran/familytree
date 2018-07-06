@@ -1,6 +1,7 @@
 package yuown.yenkay.familytree.rest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,13 +84,13 @@ public class MemberLinkResource {
 	}
 
 	@GetMapping("/export")
-	public List<MemberData> export() {
+	public List<MemberData> export(@RequestParam(name = "member", required = false) Long rootMember) {
 		List<MemberData> exported = new ArrayList<>();
-		Iterable<Member> all = memberRepository.findAll();
-		for (Member member1 : all) {
+		Iterable<Member> all = null != rootMember && rootMember >= 0 ? memberRepository.findAllById(Arrays.asList(rootMember)) : memberRepository.findAll();
+		for (Member memberFromDb : all) {
 			MemberData mData = new MemberData();
-			BeanUtils.copyProperties(member1, mData, new String[] { "son", "daughter", "spouse", "father", "mother" });
-			Member member = memberRepository.findById(member1.getId()).get();
+			BeanUtils.copyProperties(memberFromDb, mData, new String[] { "son", "daughter", "spouse", "father", "mother" });
+			Member member = memberRepository.findById(memberFromDb.getId()).get();
 
 			prepareMemberRelations(member.getSon(), mData.getSon());
 			prepareMemberRelations(member.getDaughter(), mData.getDaughter());

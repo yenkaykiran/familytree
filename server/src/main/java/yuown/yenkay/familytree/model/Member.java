@@ -10,6 +10,10 @@ import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -59,6 +63,18 @@ public class Member {
 
 	@Relationship(type = "MOTHER", direction = Relationship.OUTGOING)
 	Member mother;
+
+	@CreatedDate
+	public LocalDateTime createDate;
+
+	@LastModifiedDate
+	public LocalDateTime lastModifiedDate;
+
+	@CreatedBy
+	public String createdBy;
+
+	@LastModifiedBy
+	public String lastModifiedBy;
 
 	@Override
 	public int hashCode() {
