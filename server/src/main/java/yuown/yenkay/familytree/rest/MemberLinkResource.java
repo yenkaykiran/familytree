@@ -86,28 +86,44 @@ public class MemberLinkResource {
 	@GetMapping("/export")
 	public List<MemberData> export(@RequestParam(name = "member", required = false) Long rootMember) {
 		List<MemberData> exported = new ArrayList<>();
-		Iterable<Member> all = null != rootMember && rootMember >= 0 ? memberRepository.findAllById(Arrays.asList(rootMember)) : memberRepository.findAll();
+		Iterable<Member> all = null;
+		if (null != rootMember && rootMember >= 0) {
+			all = memberRepository.findAllById(Arrays.asList(rootMember));
+		} else {
+			all = memberRepository.findAll();
+		}
 		for (Member memberFromDb : all) {
-			MemberData mData = new MemberData();
-			BeanUtils.copyProperties(memberFromDb, mData, new String[] { "son", "daughter", "spouse", "father", "mother" });
+			MemberData mData = convert(memberFromDb);
 			Member member = memberRepository.findById(memberFromDb.getId()).get();
 
-			prepareMemberRelations(member.getSon(), mData.getSon());
-			prepareMemberRelations(member.getDaughter(), mData.getDaughter());
-			prepareMemberRelations(member.getSpouse(), mData.getSpouse());
+			prepareMemberRelations(exported, member.getSon(), mData.getSon(), rootMember);
+			prepareMemberRelations(exported, member.getDaughter(), mData.getDaughter(), rootMember);
+			prepareMemberRelations(exported, member.getSpouse(), mData.getSpouse(), rootMember);
 			if(null != member.getGothram()) {
 				mData.setGothram(member.getGothram().getName());
 			}
 			if (null != member.getFather()) {
 				mData.setFather(member.getFather().getId());
+				if (null != rootMember && rootMember >= 0) {
+					exported.add(convert(member.getFather()));
+				}
 			}
 			if (null != member.getMother()) {
 				mData.setMother(member.getMother().getId());
+				if (null != rootMember && rootMember >= 0) {
+					exported.add(convert(member.getMother()));
+				}
 			}
 
 			exported.add(mData);
 		}
 		return exported;
+	}
+
+	private MemberData convert(Member memberFromDb) {
+		MemberData mData = new MemberData();
+		BeanUtils.copyProperties(memberFromDb, mData, new String[] { "son", "daughter", "spouse", "father", "mother" });
+		return mData;
 	}
 
 	@PostMapping("/import")
@@ -157,9 +173,12 @@ public class MemberLinkResource {
 		}
 	}
 
-	private void prepareMemberRelations(Set<Member> rel, Set<Long> set) {
+	private void prepareMemberRelations(List<MemberData> exported, Set<Member> rel, Set<Long> set, Long rootMember) {
 		for (Member member : rel) {
 			set.add(member.getId());
+			if (null != rootMember && rootMember >= 0) {
+				exported.add(convert(member));
+			}
 		}
 	}
 

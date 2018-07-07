@@ -13,7 +13,7 @@ import yuown.yenkay.familytree.model.Member;
 public interface MemberRepository extends Neo4jRepository<Member, Long> {
 
 	@RestResource(path = "nameStartsWith", rel = "nameStartsWith")
-	Page<Member> findAllByNameIgnoreCaseContaining(@Param("name") String name, Pageable p);
+	Page<Member> findByNameOrFamilyNameContains(@Param("name") String name, @Param("name") String name1, Pageable p);
 	
 	Member findOneByNameAndFamilyNameAndAlternateFamilyName(String name, String familyName, String alternateFamilyName);
 
