@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import yuown.yenkay.familytree.model.GENDER;
 import yuown.yenkay.familytree.model.Gothram;
 import yuown.yenkay.familytree.model.Member;
 import yuown.yenkay.familytree.model.MemberData;
@@ -87,6 +88,9 @@ public class MemberLinkResource {
 	public List<MemberData> export(@RequestParam(name = "member", required = false) Long rootMember) {
 		List<MemberData> exported = new ArrayList<>();
 		Iterable<Member> all = null;
+		MemberData f = null;
+		MemberData first = null;
+		Member father = null;
 		if (null != rootMember && rootMember >= 0) {
 			all = memberRepository.findAllById(Arrays.asList(rootMember));
 		} else {
@@ -94,18 +98,27 @@ public class MemberLinkResource {
 		}
 		for (Member memberFromDb : all) {
 			MemberData mData = convert(memberFromDb);
+			if(null == first) {
+				first = mData;
+			}
 			Member member = memberRepository.findById(memberFromDb.getId()).get();
 
-			prepareMemberRelations(exported, member.getSon(), mData.getSon(), rootMember);
-			prepareMemberRelations(exported, member.getDaughter(), mData.getDaughter(), rootMember);
-			prepareMemberRelations(exported, member.getSpouse(), mData.getSpouse(), rootMember);
+			prepareMemberRelations(exported, member.getSon(), mData.getSon(), rootMember, "son");
+			prepareMemberRelations(exported, member.getDaughter(), mData.getDaughter(), rootMember, "daughter");
+			prepareMemberRelations(exported, member.getSpouse(), mData.getSpouse(), rootMember, "spouse");
 			if(null != member.getGothram()) {
 				mData.setGothram(member.getGothram().getName());
 			}
 			if (null != member.getFather()) {
 				mData.setFather(member.getFather().getId());
 				if (null != rootMember && rootMember >= 0) {
-					exported.add(convert(member.getFather()));
+					if(null == f) {
+						f = convert(member.getFather());
+						father = memberRepository.findById(member.getFather().getId()).get();
+						exported.add(f);
+					} else {
+						exported.add(convert(member.getFather()));
+					}
 				}
 			}
 			if (null != member.getMother()) {
@@ -116,6 +129,17 @@ public class MemberLinkResource {
 			}
 
 			exported.add(mData);
+		}
+		if(null != first && null != f) {
+			if(first.getGender().equals(GENDER.MALE)) {
+				f.getSon().add(first.getId());
+			} else {
+				f.getDaughter().add(first.getId());
+			}
+			for (Member member : father.getSpouse()) {
+				f.getSpouse().add(member.getId());
+				exported.add(convert(member));
+			}
 		}
 		return exported;
 	}
@@ -173,11 +197,15 @@ public class MemberLinkResource {
 		}
 	}
 
-	private void prepareMemberRelations(List<MemberData> exported, Set<Member> rel, Set<Long> set, Long rootMember) {
+	private void prepareMemberRelations(List<MemberData> exported, Set<Member> rel, Set<Long> set, Long rootMember, String relation) {
 		for (Member member : rel) {
 			set.add(member.getId());
 			if (null != rootMember && rootMember >= 0) {
-				exported.add(convert(member));
+				MemberData m = convert(member);
+				exported.add(m);
+				if(StringUtils.equalsIgnoreCase(relation, "spouse")) {
+					m.getSpouse().add(rootMember);
+				}
 			}
 		}
 	}
@@ -194,9 +222,13 @@ public class MemberLinkResource {
 			case "daughter":
 				s.setFather(null);
 				break;
+			case "spouse":
+				s.getSpouse().remove(d);
+				break;
 			}
 			s = memberRepository.save(s);
 		}
+		d = memberRepository.findById(destination).get();
 		if (null != s && null != d) {
 			switch (relation) {
 			case "son":
