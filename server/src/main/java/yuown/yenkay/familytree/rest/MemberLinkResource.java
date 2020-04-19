@@ -91,6 +91,10 @@ public class MemberLinkResource {
 		MemberData f = null;
 		MemberData first = null;
 		Member father = null;
+		Member r = memberRepository.findTop1ByRoot(true);
+		if(null != r) {
+			rootMember = r.getId();
+		}
 		if (null != rootMember && rootMember >= 0) {
 			all = memberRepository.findAllById(Arrays.asList(rootMember));
 		} else {
@@ -146,7 +150,7 @@ public class MemberLinkResource {
 
 	private MemberData convert(Member memberFromDb) {
 		MemberData mData = new MemberData();
-		BeanUtils.copyProperties(memberFromDb, mData, new String[] { "son", "daughter", "spouse", "father", "mother" });
+		BeanUtils.copyProperties(memberFromDb, mData, new String[] { "son", "daughter", "spouse", "father", "mother", "root" });
 		return mData;
 	}
 
@@ -158,7 +162,7 @@ public class MemberLinkResource {
 			if (null == member) {
 				member = new Member();
 			}
-			BeanUtils.copyProperties(mData, member, new String[] { "son", "daughter", "spouse", "father", "mother", "id", "gothram" });
+			BeanUtils.copyProperties(mData, member, new String[] { "son", "daughter", "spouse", "father", "mother", "id", "gothram", "root" });
 			if (StringUtils.isNotBlank(mData.getGothram())) {
 				Gothram gothram = gothramRepository.findOneByNameIgnoreCaseContaining(mData.getGothram());
 				if(gothram == null) {
@@ -168,6 +172,9 @@ public class MemberLinkResource {
 				}
 				member.setGothram(gothram);
 				member.setGothramId(gothram.getId());
+			}
+			if(mData.getRoot() == null) {
+				member.setRoot(false);
 			}
 			Member saved = memberRepository.save(member);
 			map.put(mData.getId(), saved.getId());

@@ -46,6 +46,8 @@ public class Member {
 	
 	private Long gothramId;
 	
+	private Boolean root;
+	
 	@Relationship(type = "HAS_GOTHRAM", direction = Relationship.OUTGOING)
 	private Gothram gothram;
 

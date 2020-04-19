@@ -49,6 +49,8 @@ public class MemberData {
 	public String createdBy;
 
 	public String lastModifiedBy;
+		
+	private Boolean root;
 
 	@Override
 	public int hashCode() {

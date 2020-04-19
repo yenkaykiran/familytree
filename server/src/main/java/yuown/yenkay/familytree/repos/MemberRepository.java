@@ -19,4 +19,6 @@ public interface MemberRepository extends Neo4jRepository<Member, Long> {
 	
 	Member findOneByNameAndFamilyNameAndAlternateFamilyName(String name, String familyName, String alternateFamilyName);
 
+	Member findTop1ByRoot(boolean b);
+
 }
