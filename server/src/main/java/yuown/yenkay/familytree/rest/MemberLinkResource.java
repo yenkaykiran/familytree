@@ -94,13 +94,13 @@ public class MemberLinkResource {
 		if (null != rootMember && rootMember >= 0) {
 			all = memberRepository.findAllById(Arrays.asList(rootMember));
 		} else {
-			Member r = memberRepository.findTop1ByRoot(true);
-			if(null != r) {
-				rootMember = r.getId();
-				all = memberRepository.findAllById(Arrays.asList(rootMember));
-			} else {
-				all = memberRepository.findAll();
-			}
+//			Member r = memberRepository.findTop1ByRoot(true);
+//			if(null != r) {
+//				rootMember = r.getId();
+//				all = memberRepository.findAllById(Arrays.asList(rootMember));
+//			} else {
+			all = memberRepository.findAll();
+//			}
 		}
 		for (Member memberFromDb : all) {
 			MemberData mData = convert(memberFromDb);

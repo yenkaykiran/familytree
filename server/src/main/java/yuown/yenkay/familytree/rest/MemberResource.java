@@ -54,6 +54,27 @@ public class MemberResource {
 		}
 		return response;
 	}
+	
+	@PostMapping("/root")
+	public ResponseEntity<Member> makeRoot(@RequestBody Member member) {
+		ResponseEntity<Member> response = null;
+		try {
+			Iterable<Member> all = memberRepository.findAll();
+			all.forEach(m -> {
+				if(member.getId() == member.getId()) {
+					m.setRoot(true);
+				} else {
+					m.setRoot(false);
+				}
+				memberRepository.save(m);
+			});
+			response = new ResponseEntity<Member>(memberRepository.findById(member.getId()).get(), HttpStatus.OK);
+		} catch (Exception e) {
+			response = new ResponseEntity<Member>(HttpStatus.BAD_REQUEST);
+			response.getHeaders().add("reason", e.getMessage());
+		}
+		return response;
+	}
 
 	@DeleteMapping("/{member}")
 	public ResponseEntity<Member> delete(@PathVariable("member") Long member) {
