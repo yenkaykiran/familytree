@@ -15,8 +15,10 @@ import yuown.yenkay.familytree.model.Member;
 public interface MemberRepository extends Neo4jRepository<Member, Long> {
 
 //	@RestResource(path = "nameStartsWith", rel = "nameStartsWith")
-	Page<Member> findByNameOrFamilyNameIgnoreCaseContaining(@Param("name") String name, @Param("name") String familyName, Pageable p);
-	
+	Page<Member> findByNameOrFamilyNameIgnoreCaseContaining(@Param("name") String name, @Param("familyName") String familyName, Pageable p);
+
+	Page<Member> findByNameOrFamilyNameOrAlternateFamilyNameMatchesRegex(@Param("name") String name, @Param("familyName") String familyName, @Param("alternateFamilyName") String alternateFamilyName, Pageable p);
+
 	Member findOneByNameAndFamilyNameAndAlternateFamilyName(String name, String familyName, String alternateFamilyName);
 
 	Member findTop1ByRoot(boolean b);

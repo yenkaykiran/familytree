@@ -54,7 +54,7 @@ public class MemberResource {
 		}
 		return response;
 	}
-	
+
 	@PostMapping("/root")
 	public ResponseEntity<Member> makeRoot(@RequestBody Member member) {
 		ResponseEntity<Member> response = null;
@@ -92,7 +92,8 @@ public class MemberResource {
 	@GetMapping
 	public Page<Member> getAll(@RequestParam(name = "name", required = false) String name, Pageable p) {
 		if (StringUtils.isNotBlank(name)) {
-			return memberRepository.findByNameOrFamilyNameIgnoreCaseContaining(name, name, p);
+			name = "(?i)" + name;
+			return memberRepository.findByNameOrFamilyNameOrAlternateFamilyNameMatchesRegex(name, name, name, p);
 		} else {
 			return memberRepository.findAll(p);
 		}
