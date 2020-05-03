@@ -94,7 +94,7 @@ public class MemberResource {
 		if (StringUtils.isNotBlank(name)) {
 //			name = "(?i)G[" + name + "].*";
 //			return memberRepository.findByNameOrFamilyNameOrAlternateFamilyNameMatchesRegex(name, name, name, p);
-			return memberRepository.findByNameOrFamilyNameIgnoreCaseContaining(name, name, p);
+			return memberRepository.findByNameIgnoreCaseContainingOrFamilyNameIgnoreCaseContaining(name, name, p);
 		} else {
 			return memberRepository.findAll(p);
 		}
