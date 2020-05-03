@@ -92,7 +92,7 @@ public class MemberResource {
 	@GetMapping
 	public Page<Member> getAll(@RequestParam(name = "name", required = false) String name, Pageable p) {
 		if (StringUtils.isNotBlank(name)) {
-			name = "(?i)" + name;
+			name = ".*((?i)" + name + ").*";
 			return memberRepository.findByNameOrFamilyNameOrAlternateFamilyNameMatchesRegex(name, name, name, p);
 		} else {
 			return memberRepository.findAll(p);
