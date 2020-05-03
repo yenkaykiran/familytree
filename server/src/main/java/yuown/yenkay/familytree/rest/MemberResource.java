@@ -92,8 +92,9 @@ public class MemberResource {
 	@GetMapping
 	public Page<Member> getAll(@RequestParam(name = "name", required = false) String name, Pageable p) {
 		if (StringUtils.isNotBlank(name)) {
-			name = "(?i)G[" + name + "].*";
-			return memberRepository.findByNameOrFamilyNameOrAlternateFamilyNameMatchesRegex(name, name, name, p);
+//			name = "(?i)G[" + name + "].*";
+//			return memberRepository.findByNameOrFamilyNameOrAlternateFamilyNameMatchesRegex(name, name, name, p);
+			return memberRepository.findByNameOrFamilyNameIgnoreCaseContaining(name, name, p);
 		} else {
 			return memberRepository.findAll(p);
 		}
