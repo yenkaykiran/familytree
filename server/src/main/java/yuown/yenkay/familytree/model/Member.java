@@ -6,10 +6,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
+import org.springframework.data.neo4j.core.schema.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -19,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 
-@NodeEntity
+@Node
 @Data
 @JsonIgnoreProperties(value = { "son", "daughter", "spouse", "father", "mother", "gothram" })
 public class Member {
@@ -48,22 +45,22 @@ public class Member {
 	
 	private Boolean root;
 	
-	@Relationship(type = "HAS_GOTHRAM", direction = Relationship.OUTGOING)
+	@Relationship(type = "HAS_GOTHRAM", direction = Relationship.Direction.OUTGOING)
 	private Gothram gothram;
 
-	@Relationship(type = "SON", direction = Relationship.OUTGOING)
+	@Relationship(type = "SON", direction = Relationship.Direction.OUTGOING)
 	Set<Member> son = new HashSet<Member>();
 
-	@Relationship(type = "DAUGHTER", direction = Relationship.OUTGOING)
+	@Relationship(type = "DAUGHTER", direction = Relationship.Direction.OUTGOING)
 	Set<Member> daughter = new HashSet<Member>();
 
-	@Relationship(type = "SPOUSE", direction = Relationship.UNDIRECTED)
+	@Relationship(type = "SPOUSE")
 	Set<Member> spouse = new HashSet<Member>();
 
-	@Relationship(type = "FATHER", direction = Relationship.OUTGOING)
+	@Relationship(type = "FATHER", direction = Relationship.Direction.OUTGOING)
 	Member father;
 
-	@Relationship(type = "MOTHER", direction = Relationship.OUTGOING)
+	@Relationship(type = "MOTHER", direction = Relationship.Direction.OUTGOING)
 	Member mother;
 
 	@CreatedDate

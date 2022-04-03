@@ -2,13 +2,11 @@ package yuown.yenkay.familytree.model;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
+import org.springframework.data.neo4j.core.schema.*;
 
 import lombok.Data;
 
-@NodeEntity(label = "Gothram")
+@Node(labels = "Gothram")
 @Data
 public class Gothram {
 
