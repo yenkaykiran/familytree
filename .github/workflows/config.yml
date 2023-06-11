@@ -21,6 +21,7 @@ jobs:
         with:
           java-version: 1.8
           cache: maven
+          distribution: "corretto"
 
       - run: mvn clean install
 
