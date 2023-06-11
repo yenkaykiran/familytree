@@ -17,29 +17,22 @@ jobs:
       - name: Github checkout
         uses: actions/checkout@v3
 
-      - uses: actions/setup-java@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
         with:
-          java-version: 8
-          cache: maven
-          distribution: "corretto"
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-#      - name: Maven Build
-#        run: chmod +x ./mvnw && ./mvnw clean install
+      - name: Install pack CLI via the official buildpack Action
+        uses: buildpacks/github-actions/setup-pack@v5.0.0
 
-#      - uses: actions/upload-artifact@v3
-#        with:
-#          name: Package
-#          path: target/*.jar
-
-
-      #      - run: npm run lint
-      #
-      #      - run: npm test
-      #
-      #      - run: npm audit
-
-      - name: Setup Fly.io config
-        uses: superfly/flyctl-actions/setup-flyctl@master
-
-      - name: Deploy to Fly.io
-        run: flyctl deploy --remote-only --no-cache
+      - name: Build app with pack CLI & publish to GitHub Container Registry
+        run: |
+          pack build ghcr.io/jonashackt/spring-boot-flyio:latest \
+              --builder paketobuildpacks/builder:base \
+              --path . \
+              --env "BP_OCI_SOURCE=https://github.com/jonashackt/spring-boot-flyio" \
+              --env "BP_JVM_VERSION=8" \
+              --cache-image ghcr.io/jonashackt/spring-boot-flyio-paketo-cache-image:latest \
+              --publish
