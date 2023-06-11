@@ -19,7 +19,7 @@ jobs:
 
       - uses: actions/setup-java@v3
         with:
-          java-version: 1.8
+          java-version: 8
           cache: maven
           distribution: "corretto"
 
