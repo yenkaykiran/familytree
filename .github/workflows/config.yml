@@ -31,8 +31,7 @@ jobs:
           pack build ghcr.io/yenkaykiran/nk-tree:latest \
               --builder paketobuildpacks/builder:base \
               --path . \
-              --env "BP_OCI_SOURCE=https://github.com/jonashackt/spring-boot-flyio" \
+              --env "BP_OCI_SOURCE=https://github.com/yenkaykiran/nk-tree" \
               --env "BP_JVM_VERSION=8" \
-              --cache-image ghcr.io/jonashackt/spring-boot-flyio-paketo-cache-image:latest \
+              --cache-image ghcr.io/yenkaykiran/nk-tree-paketo-cache-image:latest \
               --publish
-
