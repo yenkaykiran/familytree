@@ -23,13 +23,13 @@ jobs:
           cache: maven
           distribution: "corretto"
 
-      - name: Maven Build
-        run: chmod +x ./mvnw && ./mvnw clean install
+#      - name: Maven Build
+#        run: chmod +x ./mvnw && ./mvnw clean install
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Package
-          path: target/*.jar
+#      - uses: actions/upload-artifact@v3
+#        with:
+#          name: Package
+#          path: target/*.jar
 
 
       #      - run: npm run lint
