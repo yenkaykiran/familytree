@@ -23,7 +23,7 @@ jobs:
           cache: maven
           distribution: "corretto"
 
-      - run: mvn clean install
+      - run: ./mvnw clean install
 
       - uses: actions/upload-artifact@v3
         with:
