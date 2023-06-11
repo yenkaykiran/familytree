@@ -17,12 +17,13 @@ jobs:
       - name: Github checkout
         uses: actions/checkout@v3
 
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
           java-version: 8
           distribution: "corretto"
+          cache: 'maven'
 
-#      - run: npm ci
+      #      - run: npm ci
 
       #      - run: npm run lint
       #
