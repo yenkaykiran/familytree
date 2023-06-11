@@ -12,7 +12,7 @@ kill_timeout = "5s"
   app = "java $JAVA_OPTS -Xmx256m -jar target/*.jar --server.port=$PORT"
 
 [build]
-  builder = "heroku/heroku-maven-plugin"
+  builder = "heroku/buildpacks:20"
 
 [[services]]
   protocol = "tcp"
