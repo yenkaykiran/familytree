@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for nk-tree on 2023-06-11T11:49:36+05:30
+# fly.toml app configuration file generated for nk-tree on 2023-06-11T13:56:37+05:30
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -8,11 +8,11 @@ primary_region = "ams"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
 
-[processes]
-  app = "java $JAVA_OPTS -Xmx256m -jar target/familytree-0.0.1-SNAPSHOT.jar --server.port=$PORT"
-
 [build]
   builder = "heroku/buildpacks:20"
+
+[processes]
+  app = "java -Xmx256m -jar target/*.jar --server.port=$PORT"
 
 [[services]]
   protocol = "tcp"
