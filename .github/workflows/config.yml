@@ -11,27 +11,28 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+#    container: amazoncorretto:8-al2023-jdk
 
     steps:
       - name: Github checkout
         uses: actions/checkout@v3
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+      - uses: actions/setup-java@v2
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          java-version: 8
+          distribution: "corretto"
 
-      - name: Install pack CLI via the official buildpack Action
-        uses: buildpacks/github-actions/setup-pack@v5.0.0
+#      - run: npm ci
 
-      - name: Build app with pack CLI & publish to GitHub Container Registry
-        run: |
-          pack build ghcr.io/yenkaykiran/nk-tree:latest \
-              --builder paketobuildpacks/builder:base \
-              --path . \
-              --env "BP_OCI_SOURCE=https://github.com/yenkaykiran/nk-tree" \
-              --env "BP_JVM_VERSION=8" \
-              --cache-image ghcr.io/yenkaykiran/nk-tree-paketo-cache-image:latest \
-              --publish
+      #      - run: npm run lint
+      #
+      #      - run: npm test
+      #
+      #      - run: npm audit
+
+      - name: Setup Fly.io config
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Fly.io
+        run: flyctl deploy --remote-only --no-cache
+
