@@ -9,7 +9,7 @@ kill_signal = "SIGINT"
 kill_timeout = "5s"
 
 [processes]
-  app = "java $JAVA_OPTS -Xmx256m -jar familytree-0.0.1-SNAPSHOT.jar --server.port=$PORT"
+  app = "java $JAVA_OPTS -Xmx256m -jar target/familytree-0.0.1-SNAPSHOT.jar --server.port=$PORT"
 
 [build]
   builder = "heroku/buildpacks:20"
