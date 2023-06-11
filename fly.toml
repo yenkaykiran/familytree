@@ -1,0 +1,33 @@
+# fly.toml app configuration file generated for nk-tree on 2023-06-11T11:49:36+05:30
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "nk-tree"
+primary_region = "ams"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[processes]
+  app = "java $JAVA_OPTS -Xmx256m -jar target/*.jar --server.port=$PORT"
+
+[build]
+  builder = "https://github.com/heroku/heroku-maven-plugin.git"
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 8080
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
