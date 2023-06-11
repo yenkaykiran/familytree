@@ -36,3 +36,4 @@ jobs:
               --env "BP_JVM_VERSION=8" \
               --cache-image ghcr.io/jonashackt/spring-boot-flyio-paketo-cache-image:latest \
               --publish
+
