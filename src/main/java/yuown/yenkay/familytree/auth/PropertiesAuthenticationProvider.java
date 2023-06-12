@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -31,9 +29,8 @@ public class PropertiesAuthenticationProvider extends AbstractUserDetailsAuthent
     private JwtUtil jwtUtil;
     
 	private List<DummyUser> users = new ArrayList<DummyUser>();
-	
-	@PostConstruct
-	private void init() throws Exception {
+
+	public void doAfterPropertiesSet() throws Exception {
 		ClassPathResource classPathResource = new ClassPathResource("local-users.json");
 	    if (classPathResource != null) {
 	    	byte[] bdata = FileCopyUtils.copyToByteArray(classPathResource.getInputStream());

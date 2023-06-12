@@ -61,14 +61,14 @@ public class MemberResource {
 		try {
 			Iterable<Member> all = memberRepository.findAll();
 			all.forEach(m -> {
-				if(member.getId() == member.getId()) {
+				if(member.getMemberId() == m.getMemberId()) {
 					m.setRoot(true);
 				} else {
 					m.setRoot(false);
 				}
 				memberRepository.save(m);
 			});
-			response = new ResponseEntity<Member>(memberRepository.findById(member.getId()).get(), HttpStatus.OK);
+			response = new ResponseEntity<Member>(memberRepository.findById(member.getMemberId()).get(), HttpStatus.OK);
 		} catch (Exception e) {
 			response = new ResponseEntity<Member>(HttpStatus.BAD_REQUEST);
 			response.getHeaders().add("reason", e.getMessage());

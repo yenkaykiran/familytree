@@ -12,7 +12,7 @@ public class Gothram {
 
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long gothramId;
 
 	private String name;
 

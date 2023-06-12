@@ -74,7 +74,7 @@ public class MemberLinkResource {
 		if (null != m) {
 			if(null != g) {
 				m.setGothram(g);
-				m.setGothramId(g.getId());
+				m.setGothramId(g.getGothramId());
 			} else {
 				m.setGothram(null);
 				m.setGothramId(null);
@@ -107,7 +107,7 @@ public class MemberLinkResource {
 			if(null == first) {
 				first = mData;
 			}
-			Member member = memberRepository.findById(memberFromDb.getId()).get();
+			Member member = memberRepository.findById(memberFromDb.getMemberId()).get();
 
 			prepareMemberRelations(exported, member.getSon(), mData.getSon(), rootMember, "son");
 			prepareMemberRelations(exported, member.getDaughter(), mData.getDaughter(), rootMember, "daughter");
@@ -116,11 +116,11 @@ public class MemberLinkResource {
 				mData.setGothram(member.getGothram().getName());
 			}
 			if (null != member.getFather()) {
-				mData.setFather(member.getFather().getId());
+				mData.setFather(member.getFather().getMemberId());
 				if (null != rootMember && rootMember >= 0) {
 					if(null == f) {
 						f = convert(member.getFather());
-						father = memberRepository.findById(member.getFather().getId()).get();
+						father = memberRepository.findById(member.getFather().getMemberId()).get();
 						exported.add(f);
 					} else {
 						exported.add(convert(member.getFather()));
@@ -128,7 +128,7 @@ public class MemberLinkResource {
 				}
 			}
 			if (null != member.getMother()) {
-				mData.setMother(member.getMother().getId());
+				mData.setMother(member.getMother().getMemberId());
 				if (null != rootMember && rootMember >= 0) {
 					exported.add(convert(member.getMother()));
 				}
@@ -143,7 +143,7 @@ public class MemberLinkResource {
 				f.getDaughter().add(first.getId());
 			}
 			for (Member member : father.getSpouse()) {
-				f.getSpouse().add(member.getId());
+				f.getSpouse().add(member.getMemberId());
 				exported.add(convert(member));
 			}
 		}
@@ -173,13 +173,13 @@ public class MemberLinkResource {
 					gothram = gothramRepository.save(gothram);
 				}
 				member.setGothram(gothram);
-				member.setGothramId(gothram.getId());
+				member.setGothramId(gothram.getGothramId());
 			}
 			if(mData.getRoot() == null) {
 				member.setRoot(false);
 			}
 			Member saved = memberRepository.save(member);
-			map.put(mData.getId(), saved.getId());
+			map.put(mData.getId(), saved.getMemberId());
 		}
 		for (MemberData mData : imported) {
 			Member saved = memberRepository.findById(map.get(mData.getId())).get();
@@ -208,7 +208,7 @@ public class MemberLinkResource {
 
 	private void prepareMemberRelations(List<MemberData> exported, Set<Member> rel, Set<Long> set, Long rootMember, String relation) {
 		for (Member member : rel) {
-			set.add(member.getId());
+			set.add(member.getMemberId());
 			if (null != rootMember && rootMember >= 0) {
 				MemberData m = convert(member);
 				exported.add(m);

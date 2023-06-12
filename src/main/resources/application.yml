@@ -1,0 +1,12 @@
+spring:
+  neo4j:
+    uri: ${NEO4J_URL}
+    authentication:
+      username: ${NEO4J_USER}
+      password: ${NEO4J_PWD}
+
+token:
+  expiration:
+    time:
+      milliseconds: 86400000
+  secret: "yuown-familytree"
