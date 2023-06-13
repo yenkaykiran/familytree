@@ -12,7 +12,7 @@ kill_timeout = "5s"
 builder = "heroku/buildpacks:20"
 
 [processes]
-app = "java -Xmx250m -XX:+UseSerialGC -XX:MaxRAM=150m -Xshareclasses -Xquickstart -jar target/familytree-0.0.1-SNAPSHOT.jar"
+app = "java -Xmx250m -XX:+UseSerialGC -XX:MaxRAM=150m -Xquickstart -jar target/familytree-0.0.1-SNAPSHOT.jar"
 
 [[services]]
 protocol = "tcp"
