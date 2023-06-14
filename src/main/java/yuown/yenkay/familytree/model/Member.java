@@ -19,7 +19,7 @@ import lombok.Data;
 @Node
 @Data
 @JsonIgnoreProperties(value = { "son", "daughter", "spouse", "father", "mother", "gothram" })
-public class Member {
+public class Member implements Serializable {
 
 	@Id
 	@GeneratedValue
