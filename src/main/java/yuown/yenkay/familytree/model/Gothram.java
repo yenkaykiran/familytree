@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Node(labels = "Gothram")
 @Data
-public class Gothram {
+public class Gothram implements  Serializable {
 
 	@Id
 	@GeneratedValue
