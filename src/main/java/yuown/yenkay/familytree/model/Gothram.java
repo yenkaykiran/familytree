@@ -5,6 +5,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.neo4j.core.schema.*;
 
 import lombok.Data;
+import java.io.*;
+
 
 @Node(labels = "Gothram")
 @Data
