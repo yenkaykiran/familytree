@@ -20,23 +20,23 @@ import java.util.Optional;
 public interface MemberRepository extends Neo4jRepository<Member, Long> {
 
 //	@RestResource(path = "nameStartsWith", rel = "nameStartsWith")
-	@Cacheable(cacheNames = "members-name-family")
+	@Cacheable(cacheNames = "members-name-family", unless="#result.getTotalElements() == 0")
 	Page<Member> findByNameIgnoreCaseContainingOrFamilyNameIgnoreCaseContaining(@Param("name") String name, @Param("familyName") String familyName, Pageable p);
 
-	@Cacheable(cacheNames = "members-name-family-search")
+	@Cacheable(cacheNames = "members-name-family-search", unless="#result.getTotalElements() == 0")
 	Page<Member> findByNameOrFamilyNameOrAlternateFamilyNameMatchesRegex(@Param("name") String name, @Param("familyName") String familyName, @Param("alternateFamilyName") String alternateFamilyName, Pageable p);
 
-	@Cacheable(cacheNames = "members-name-family-matched")
+	@Cacheable(cacheNames = "members-name-family-matched", unless="#result == null")
 	Member findOneByNameAndFamilyNameAndAlternateFamilyName(String name, String familyName, String alternateFamilyName);
 
-	@Cacheable(cacheNames = "members-root")
+	@Cacheable(cacheNames = "members-root", unless="#result == null")
 	Member findTop1ByRoot(boolean b);
 
-	@Cacheable(cacheNames = "members-id")
+	@Cacheable(cacheNames = "members-id", unless="#result == null")
 	@Override
 	Optional<Member> findById(Long id);
 
-	@Cacheable(cacheNames = "members-id-list")
+	@Cacheable(cacheNames = "members-id-list", unless="#result == null || #result.size() == 0")
 	@Override
 	List<Member> findAllById(Iterable<Long> ids);
 
