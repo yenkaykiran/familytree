@@ -1,11 +1,6 @@
 package yuown.yenkay.familytree.rest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +18,7 @@ import yuown.yenkay.familytree.model.Member;
 import yuown.yenkay.familytree.model.MemberData;
 import yuown.yenkay.familytree.repos.GothramRepository;
 import yuown.yenkay.familytree.repos.MemberRepository;
+import yuown.yenkay.familytree.service.CacheHelper;
 
 @RestController
 @RequestMapping("/api")
@@ -33,6 +29,9 @@ public class MemberLinkResource {
 	
 	@Autowired
 	private GothramRepository gothramRepository;
+
+	@Autowired
+	private CacheHelper cacheHelper;
 
 	@PostMapping("/link")
 	public void link(@RequestParam("source") Long source, @RequestParam("relation") String relation,
@@ -195,6 +194,24 @@ public class MemberLinkResource {
 				saved.setMother(memberRepository.findById(map.get(mData.getMother())).get());
 			}
 			memberRepository.save(saved);
+		}
+	}
+
+	@GetMapping("/sync-spouse")
+	public void syncSpouse() {
+		cacheHelper.clearMembersCache();
+		List<Member> all = memberRepository.findAll();
+		for (Member member : all) {
+			if(member.getSpouse() != null && !member.getSpouse().isEmpty()) {
+				Set<Member> memberSpouses = member.getSpouse();
+				for (Member spouse : memberSpouses) {
+					if (spouse.getSpouse() == null || spouse.getSpouse().isEmpty()) {
+						spouse.setSpouse(new HashSet<>());
+					}
+					spouse.getSpouse().add(member);
+					memberRepository.save(spouse);
+				}
+			}
 		}
 	}
 

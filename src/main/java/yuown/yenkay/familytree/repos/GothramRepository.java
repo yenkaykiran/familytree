@@ -20,21 +20,21 @@ public interface GothramRepository extends Neo4jRepository<Gothram, Long> {
 
 	//@RestResource(path = "nameStartsWith", rel = "nameStartsWith")
 
-	@Cacheable(cacheNames = "gothram-name-list", unless="#result == null")
+	@Cacheable(cacheNames = "gothram-name-list", unless="#result == null || #result.size() == 0")
 	List<Gothram> findAllByNameIgnoreCaseContaining(@Param("name") String name);
 	
 	//@RestResource(path = "name", rel = "name")
 	@Cacheable(cacheNames = "gothram-names", unless="#result == null")
 	Gothram findOneByNameIgnoreCaseContaining(@Param("name") String name);
 
-	@Cacheable(cacheNames = "gothram-list-paged", unless="#result == null")
+	@Cacheable(cacheNames = "gothram-list-paged", unless="#result.getTotalElements() == 0")
 	Page<Gothram> findAllByNameIgnoreCaseContaining(@Param("name") String name, Pageable pageable);
 
 	@CacheEvict(cacheNames = {"gothram-list", "gothram-names", "gothram-list-paged", "gothram-name-list"}, allEntries = true)
 	@Override
 	void deleteById(Long id);
 
-	@Cacheable(cacheNames = "gothram-list", unless="#result == null")
+	@Cacheable(cacheNames = "gothram-list", unless="#result.getTotalElements() == 0")
 	@Override
 	Page<Gothram> findAll(Pageable pageable);
 }
