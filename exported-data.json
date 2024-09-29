@@ -1,0 +1,48 @@
+[
+    {
+        "id": 9,
+        "familyName": "Gudipalli",
+        "alternateFamilyName": null,
+        "initials": "GS",
+        "name": "Vijayalakshmi",
+        "gender": "FEMALE",
+        "dateOfBirth": null,
+        "place": "Kamathamur / Kuppam",
+        "contact": null,
+        "gothram": "Gudhugu Noolla",
+        "son": [],
+        "daughter": [],
+        "spouse": [
+            128
+        ],
+        "father": null,
+        "mother": null,
+        "createDate": null,
+        "lastModifiedDate": "2018-07-08T11:12:23.588",
+        "createdBy": null,
+        "lastModifiedBy": "yenkay",
+        "root": null
+    },
+    {
+        "id": 128,
+        "familyName": "Gudipalli",
+        "alternateFamilyName": null,
+        "initials": "G B",
+        "name": "Sreenivasulu",
+        "gender": "MALE",
+        "dateOfBirth": null,
+        "place": null,
+        "contact": null,
+        "gothram": "Gudhugu Noolla",
+        "son": [],
+        "daughter": [],
+        "spouse": [9],
+        "father": null,
+        "mother": null,
+        "createDate": null,
+        "lastModifiedDate": "2018-07-07T07:20:48.797",
+        "createdBy": null,
+        "lastModifiedBy": "yenkay",
+        "root": null
+    }
+]
